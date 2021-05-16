@@ -2,13 +2,16 @@
 
 namespace app\controllers;
 
+
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\modules\admin\models\Request;
 use app\models\ContactForm;
+
 
 class SiteController extends Controller
 {
@@ -61,7 +64,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $request = Request::find()->where(['status' => 'Новая'])->limit(4)->orderBy('created_at DESC')->all();
+        return $this->render('index', ['request' => $request]);
     }
 
     /**
