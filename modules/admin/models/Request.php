@@ -39,6 +39,21 @@ class Request extends \yii\db\ActiveRecord
     {
         return 'request';
     }
+    /**
+     * @return array
+     */
+    public static function ListStatus(){
+        $arr = [
+            'Новая' => 'Новая',
+            'Решена' => 'Решена',
+            'Отклонена' => 'Отклонена',
+        ];
+        if (Yii::$app->user->can("admin")){
+            array_merge($arr,["Отклонена" => "Отклонена"]);
+        }
+        return $arr;
+    }
+
     public function behaviors()
     {
         return [
@@ -62,14 +77,24 @@ class Request extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'category_id'], 'required'],
+            [[ 'name','category_id'], 'required'],
             [['why_not'], 'string'],
             [['category_id', 'created_by', 'updated_by'], 'integer'],
             [['created_at'], 'safe'],
-            [['imageFile1'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, bmp', 'maxSize' => 10 * 1024 * 1024  ],
-            [['imageFile2'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, bmp', 'maxSize' => 10 * 1024 * 1024 ],
             [['status', 'name', 'before_img', 'after_img'], 'string', 'max' => 255],
+            [['imageFile1'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, png, bmp', 'maxSize' => 10 * 1024 * 1024],
+            [['imageFile2'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, png, bmp', 'maxSize' => 10 * 1024 * 1024],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+
+            ['imageFile2', 'required', 'when' => function($model, $attribute) {
+                return $model->status == 'Решена';
+
+            }, 'enableClientValidation' => false],
+            ['why_not', 'required', 'when' => function($model, $attribute) {
+                return $model->status == 'Отклонена';
+
+            }, 'enableClientValidation' => false],
+
         ];
     }
 

@@ -96,8 +96,15 @@ class RequestController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile1 = UploadedFile::getInstance($model, 'imageFile1');
+            $model->imageFile2 = UploadedFile::getInstance($model, 'imageFile2');
+            if ($model->upload()) {
+                // file is uploaded successfully
+                $model->save(false);
+                return $this->redirect(['view', 'id' => $model->id]);
+
+            }
         }
 
         return $this->render('update', [
