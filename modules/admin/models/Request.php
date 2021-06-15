@@ -82,7 +82,7 @@ class Request extends \yii\db\ActiveRecord
             [['category_id', 'created_by', 'updated_by'], 'integer'],
             [['created_at'], 'safe'],
             [['status', 'name', 'before_img', 'after_img'], 'string', 'max' => 255],
-            [['imageFile1'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, png, bmp', 'maxSize' => 10 * 1024 * 1024],
+            [['imageFile1'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, png, bmp, docs, docx, doc', 'maxSize' => 10 * 1024 * 1024],
             [['imageFile2'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, png, bmp', 'maxSize' => 10 * 1024 * 1024],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
 

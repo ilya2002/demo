@@ -1,5 +1,7 @@
 <?php
+use yii\helpers\Html;
 
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 
@@ -18,6 +20,8 @@ $this->title = 'My Yii Application';
 
    <?= \yii\helpers\Html::img($item->before_img, ['width' => 150]); ?> ->
    <?= \yii\helpers\Html::img($item->after_img, ['width' => 150]); ?>
+   <?= Html::a('Скачать', ['download', 'id' => $item->id]);?>
+
    <br>
    <hr>
    <br>

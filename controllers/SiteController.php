@@ -65,6 +65,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $request = Request::find()->where(['status' => 'Новая'])->limit(4)->orderBy('created_at DESC')->all();
+
         return $this->render('index', ['request' => $request]);
     }
 
@@ -119,7 +120,13 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
-
+    public function actionDownload($id) {
+        $image = Request::findOne(['id' => $id]);
+        if ($image === null) {
+            throw new NotFoundHttpException('Image not found');
+        }
+        return Yii::$app->response->sendFile(Yii::getAlias('@webroot/' . $image->before_img));
+    }
     /**
      * Displays about page.
      *
